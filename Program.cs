@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Windows;
-using Microsoft.Win32;
 
 namespace Download_Applications
 {
