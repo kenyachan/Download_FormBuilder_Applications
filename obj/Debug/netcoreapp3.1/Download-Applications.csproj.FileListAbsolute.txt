@@ -1,0 +1,12 @@
+/Users/kenya/Documents/Code/Download-Applications/bin/Debug/netcoreapp3.1/Download-Applications.deps.json
+/Users/kenya/Documents/Code/Download-Applications/bin/Debug/netcoreapp3.1/Download-Applications.runtimeconfig.json
+/Users/kenya/Documents/Code/Download-Applications/bin/Debug/netcoreapp3.1/Download-Applications.runtimeconfig.dev.json
+/Users/kenya/Documents/Code/Download-Applications/bin/Debug/netcoreapp3.1/Download-Applications.dll
+/Users/kenya/Documents/Code/Download-Applications/bin/Debug/netcoreapp3.1/Download-Applications.pdb
+/Users/kenya/Documents/Code/Download-Applications/obj/Debug/netcoreapp3.1/Download-Applications.csprojAssemblyReference.cache
+/Users/kenya/Documents/Code/Download-Applications/obj/Debug/netcoreapp3.1/Download-Applications.AssemblyInfoInputs.cache
+/Users/kenya/Documents/Code/Download-Applications/obj/Debug/netcoreapp3.1/Download-Applications.AssemblyInfo.cs
+/Users/kenya/Documents/Code/Download-Applications/obj/Debug/netcoreapp3.1/Download-Applications.csproj.CoreCompileInputs.cache
+/Users/kenya/Documents/Code/Download-Applications/obj/Debug/netcoreapp3.1/Download-Applications.dll
+/Users/kenya/Documents/Code/Download-Applications/obj/Debug/netcoreapp3.1/Download-Applications.pdb
+/Users/kenya/Documents/Code/Download-Applications/obj/Debug/netcoreapp3.1/Download-Applications.genruntimeconfig.cache
