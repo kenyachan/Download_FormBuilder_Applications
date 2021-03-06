@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Diagnostics;
 
 namespace Download_Applications
@@ -7,18 +8,31 @@ namespace Download_Applications
     {
         static void Main(string[] args)
         {
-            Stopwatch stopwatch = new Stopwatch();
+            if (args.Length < 1)
+            {
+                Console.WriteLine("No file provided.");
+                return;
+            }
 
-            stopwatch.Start();
-            Console.WriteLine($"{DateTime.Now} - Download applications started");
-            
-            Console.WriteLine(Environment.OSVersion);
+            String csvDirectory = args[0];
 
-            Console.WriteLine(ApplicationDownloader.DownloadApplications("results-form940.csv"));
+            if (File.Exists(csvDirectory))
+            {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                Console.WriteLine($"{DateTime.Now} - Download applications started");
+                
+                Console.WriteLine(Environment.OSVersion);
 
-            stopwatch.Stop();
-            Console.WriteLine($"{stopwatch.ElapsedMilliseconds} ms");
-            Console.WriteLine($"{DateTime.Now} - Download applications ended");
+                Console.WriteLine($"Number of applicants: {ApplicationDownloader.DownloadApplications(csvDirectory)}");
+
+                stopwatch.Stop();
+                Console.WriteLine($"{stopwatch.ElapsedMilliseconds}ms");
+                Console.WriteLine($"{DateTime.Now} - Download applications ended");
+            } else {
+                Console.WriteLine($"File does not exist: ${csvDirectory}");
+            }
+
         }
     }
 }
