@@ -17,10 +17,10 @@ namespace Download_Applications
 
             foreach (Application application in applications)
             {
-                if (DownloadCV(application))
+                if (application.DownloadCV(DOWNLOADSFOLDERPATH))
                     MoveCV(application);
                 
-                if (DownloadSC(application))
+                if (application.DownloadSC(DOWNLOADSFOLDERPATH))
                     MoveSC(application);
             }
 
@@ -91,74 +91,6 @@ namespace Download_Applications
                 return true;
             }
 
-            return false;
-        }
-
-    private static bool DownloadSC(Application application)
-        {
-            if (application.ScLink.Equals(String.Empty))
-            {
-                Console.WriteLine($"No Selection Criteria attached for applicant {application.FirstName} {application.LastName}");
-                return false;
-            }
-
-            Console.WriteLine($"Downloading {application.ScName}");
-            // navigates to url (downloads the application)
-            String uri = application.ScLink;
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = uri;
-            Process.Start(psi);
-
-            // Check if file is downloaded
-            DateTime timeout = DateTime.Now.AddSeconds(20);
-
-            while (DateTime.Now <= timeout)
-            {
-                if (File.Exists($"{DOWNLOADSFOLDERPATH}/{application.ScName}"))
-                {
-                    Console.WriteLine($"File downloaded : {DOWNLOADSFOLDERPATH}/{application.ScName}");
-                    return true;
-                }
-
-                System.Threading.Thread.Sleep(200);
-            }
-
-            Console.WriteLine($"File failed to download : {application.ScName}");
-            return false;
-        }
-
-        private static bool DownloadCV(Application application)
-        {
-            if (application.CvLink.Equals(String.Empty))
-            {
-                Console.WriteLine($"No CV attached for applicant {application.FirstName} {application.LastName}");
-                return false;
-            }
-
-            Console.WriteLine($"Downloading {application.CvName}");
-            // navigates to url (downloads the application)
-            String uri = application.CvLink;
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = uri;
-            Process.Start(psi);
-
-            // Check if file is downloaded
-            DateTime timeout = DateTime.Now.AddSeconds(20);
-
-            while (DateTime.Now <= timeout)
-            {
-                if (File.Exists($"{DOWNLOADSFOLDERPATH}/{application.CvName}"))
-                {
-                    Console.WriteLine($"File downloaded : {DOWNLOADSFOLDERPATH}/{application.CvName}");
-                    return true;
-                }
-
-                System.Threading.Thread.Sleep(200);
-            }
-
-            Console.WriteLine($"File failed to download : {application.CvName}");
             return false;
         }
 

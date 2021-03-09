@@ -66,5 +66,39 @@ namespace Download_Applications
             Console.WriteLine($"File failed to download : {this.CvName}");
             return false;
         }
+
+        public bool DownloadSC(String downloadFolderPath)
+        {
+            if (this.ScLink.Equals(String.Empty))
+            {
+                Console.WriteLine($"No SC attached for applicant {this.FirstName} {this.LastName}");
+                return false;
+            }
+
+            Console.WriteLine($"Downloading {this.ScName}");
+            // navigates to url (downloads the application)
+            String uri = this.ScLink;
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.FileName = uri;
+            Process.Start(psi);
+
+            // Check if file is downloaded
+            DateTime timeout = DateTime.Now.AddSeconds(20);
+
+            while (DateTime.Now <= timeout)
+            {
+                if (File.Exists($"{downloadFolderPath}/{this.ScName}"))
+                {
+                    Console.WriteLine($"File downloaded : {downloadFolderPath}/{this.ScName}");
+                    return true;
+                }
+
+                System.Threading.Thread.Sleep(200);
+            }
+
+            Console.WriteLine($"File failed to download : {this.ScName}");
+            return false;
+        }
     }
 }
