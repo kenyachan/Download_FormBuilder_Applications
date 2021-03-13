@@ -4,7 +4,7 @@ namespace Download_Applications
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Diagnostics;
+    using System.Globalization;
 
     public class ApplicationDownloader 
     {
@@ -33,10 +33,12 @@ namespace Download_Applications
             String fullName;
             String newFileName;
 
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+
             if (!application.OtherName.Equals(String.Empty))
-                fullName = $"{application.FirstName} {application.OtherName} {application.LastName}";
+                fullName = $"{textInfo.ToTitleCase(application.FirstName)} {textInfo.ToTitleCase(application.OtherName)} {textInfo.ToTitleCase(application.LastName)}";
             else
-                fullName = $"{application.FirstName} {application.LastName}";
+                fullName = $"{textInfo.ToTitleCase(application.FirstName)} {textInfo.ToTitleCase(application.LastName)}";
             
             newFileName = $"{fullName} SC{extension}";
 
@@ -60,10 +62,12 @@ namespace Download_Applications
             String fullName;
             String newFileName;
 
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+
             if (!application.OtherName.Equals(String.Empty))
-                fullName = $"{application.FirstName} {application.OtherName} {application.LastName}";
+                fullName = $"{textInfo.ToTitleCase(application.FirstName)} {textInfo.ToTitleCase(application.OtherName)} {textInfo.ToTitleCase(application.LastName)}";
             else
-                fullName = $"{application.FirstName} {application.LastName}";
+                fullName = $"{textInfo.ToTitleCase(application.FirstName)} {textInfo.ToTitleCase(application.LastName)}";
             
             newFileName = $"{fullName} CV{extension}";
 
