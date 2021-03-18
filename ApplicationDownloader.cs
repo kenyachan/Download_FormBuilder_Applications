@@ -5,6 +5,7 @@ namespace Download_Applications
     using System.IO;
     using System.Linq;
     using System.Globalization;
+    using System.Text.RegularExpressions;
 
     public class ApplicationDownloader 
     {
@@ -108,7 +109,9 @@ namespace Download_Applications
 
             foreach (String line in csvFile) 
             {
-                String[] strArr = line.Split(',');
+                // Delimiter pattern in case of comma's in file names.
+                String pattern = ",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))";
+                String[] strArr = Regex.Split(line,pattern);
 
                 // Removes first and last " characters from strings
                 strArr = strArr.Select(t => t.Trim('\"')).ToArray();    
