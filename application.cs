@@ -3,6 +3,7 @@ namespace Download_Applications
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Net;
 
     public class Application
     {
@@ -17,6 +18,10 @@ namespace Download_Applications
         private String _scLink;
         private String _scName;
 
+        // consider removing
+        private int _downloadTimeOut = 20;
+        private String _downloadFolderPath;
+
         public string SubmittedDate { get => _submittedDate; set => _submittedDate = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
         public string LastName { get => _lastName; set => _lastName = value; }
@@ -28,77 +33,51 @@ namespace Download_Applications
         public string ScLink { get => _scLink; set => _scLink = value; }
         public string ScName { get => _scName; set => _scName = value; }
 
+        //consider removing
+        public int DownloadTimeOut { get => _downloadTimeOut; set => _downloadTimeOut = value; }
+        public string DownloadFolderPath { get => _downloadFolderPath; }
+
+        public const int CV = 1;
+        public const int SC = 2;
+
         public Application()
         {
-
+            this._downloadFolderPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/Downloads";
         }
 
-        public bool DownloadCV(String downloadFolderPath)
-        {
-            if (this.CvLink.Equals(String.Empty))
+        // file is either 1 or 2, CV or SC as defined by the const above
+        public bool Download(int file)
+        {   
+            if (file != CV && file != SC) 
+                throw new ArgumentException("Uknown appFile provided. Please use Application.CV or Application.SC");
+            
+            String uri = file == CV ? this.CvLink : this.ScLink;
+            String fileName = file == CV ? this.CvName : this.ScName;
+
+            if (fileName.Equals(String.Empty))
             {
-                Console.WriteLine($"No CV attached for applicant {this.FirstName} {this.LastName}");
+                Console.WriteLine($"No {(file == CV ? "CV" : "SC")} attached for applicant " +
+                $"{this.FirstName}{(this.OtherName.Equals(String.Empty) ? String.Empty : $" {this.OtherName}")} {this.LastName}");
                 return false;
             }
 
-            Console.WriteLine($"Downloading {this.CvName}");
-            // navigates to url (downloads the application)
-            String uri = this.CvLink;
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = uri;
-            Process.Start(psi);
+            Console.WriteLine($"Downloading {(file == CV ? "CV" : "SC")} file: {fileName}");
 
-            // Check if file is downloaded
-            DateTime timeout = DateTime.Now.AddSeconds(20);
+            Process.Start("Open", uri);
 
-            while (DateTime.Now <= timeout)
+            return true;
+            /* 
+            DateTime timeout = DateTime.Now.AddSeconds(this.DownloadTimeOut);
+
+            do
             {
-                if (File.Exists($"{downloadFolderPath}/{this.CvName}"))
-                {
-                    Console.WriteLine($"File downloaded : {downloadFolderPath}/{this.CvName}");
-                    return true;
-                }
+                if (DateTime.Now >= timeout)
+                    throw new System.TimeoutException($"Timed out waiting to download file: {fileName}");
 
                 System.Threading.Thread.Sleep(200);
-            }
+            } while (!File.Exists($"{this.DownloadFolderPath}/{fileName}"));
 
-            Console.WriteLine($"File failed to download : {this.CvName}");
-            return false;
-        }
-
-        public bool DownloadSC(String downloadFolderPath)
-        {
-            if (this.ScLink.Equals(String.Empty))
-            {
-                Console.WriteLine($"No SC attached for applicant {this.FirstName} {this.LastName}");
-                return false;
-            }
-
-            Console.WriteLine($"Downloading {this.ScName}");
-            // navigates to url (downloads the application)
-            String uri = this.ScLink;
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = uri;
-            Process.Start(psi);
-
-            // Check if file is downloaded
-            DateTime timeout = DateTime.Now.AddSeconds(20);
-
-            while (DateTime.Now <= timeout)
-            {
-                if (File.Exists($"{downloadFolderPath}/{this.ScName}"))
-                {
-                    Console.WriteLine($"File downloaded : {downloadFolderPath}/{this.ScName}");
-                    return true;
-                }
-
-                System.Threading.Thread.Sleep(200);
-            }
-
-            Console.WriteLine($"File failed to download : {this.ScName}");
-            return false;
+            return $"{this.DownloadFolderPath}/{fileName}"; */
         }
     }
 }

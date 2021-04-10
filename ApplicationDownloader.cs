@@ -18,21 +18,49 @@ namespace Download_Applications
 
             foreach (Application application in applications)
             {
-                if (application.DownloadCV(DOWNLOADSFOLDERPATH))
-                    MoveCV(application);
-                
-                if (application.DownloadSC(DOWNLOADSFOLDERPATH))
-                    MoveSC(application);
-            }
+                if (application.Download(Application.CV))
+                {
+                    DateTime timeout = DateTime.Now.AddSeconds(10);
 
+                    do
+                    {
+                        if (DateTime.Now > timeout)
+                            throw new System.TimeoutException($"Timed out waiting for file to download: {application.CvName}");
+                        
+                        System.Threading.Thread.Sleep(200);
+
+                    } while (!File.Exists($"{DOWNLOADSFOLDERPATH}/{application.CvName}"));
+
+                    MoveCV(application);
+                }
+
+                if (application.Download(Application.SC))
+                {
+                    DateTime timeout = DateTime.Now.AddSeconds(10);
+
+                    do
+                    {
+                        if (DateTime.Now > timeout)
+                        {
+                            TimeoutException te = new TimeoutException($"Timed out waiting for file to download: {application.ScName}");
+                            te.Data.Add("expected file", application.CvName);
+                            throw te;
+                        }
+                            
+                        System.Threading.Thread.Sleep(200);
+
+                    } while (!File.Exists($"{DOWNLOADSFOLDERPATH}/{application.ScName}"));
+
+                    MoveSC(application);
+                }
+            }
             return applications.Count();
         }
 
         private static String MoveSC(Application application)
         {
             String extension = Path.GetExtension($"{DOWNLOADSFOLDERPATH}/{application.ScName}");
-            String fullName;
-            String newFileName;
+            String fullName, newFileName;
 
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
@@ -60,8 +88,7 @@ namespace Download_Applications
         private static String MoveCV(Application application)
         {
             String extension = Path.GetExtension($"{DOWNLOADSFOLDERPATH}/{application.CvName}");
-            String fullName;
-            String newFileName;
+            String fullName, newFileName;
 
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
